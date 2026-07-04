@@ -43,7 +43,7 @@ planning artifacts.
 
 A user should think in terms of milestones, phases, plans, and evidence.
 
-- A project starts with persistent planning memory: `PROJECT.md`,
+- A project gets a persistent planning memory: `PROJECT.md`,
   `REQUIREMENTS.md`, `ROADMAP.md`, `STATE.md`, and `config.json`.
 - A milestone is a coherent unit of project progress.
 - A phase is a roadmap item inside that milestone.
@@ -51,6 +51,25 @@ A user should think in terms of milestones, phases, plans, and evidence.
 - Every step produces artifacts that can survive a context reset.
 - The current position is recoverable from `.planning/STATE.md` and neighboring
   phase files.
+
+Those planning-memory files do not have to be the original source of product
+truth. In a company, the original inputs are often PRDs, ADRs, RFCs, specs,
+tracker issues, design docs, or architecture notes. GSD turns those inputs into
+its own normalized working memory so agents can operate consistently:
+
+- `/gsd-new-project` can synthesize `.planning/` from interactive discovery or
+  from an idea/PRD-style document passed to auto mode.
+- `/gsd-ingest-docs` can bootstrap or merge `.planning/` from existing ADRs,
+  PRDs, SPECs, and general docs, using precedence rules such as ADR > SPEC >
+  PRD > DOC.
+- `/gsd-plan-phase --prd <file>` or `/gsd-plan-phase --ingest <path>` can use a
+  PRD or ADR set directly as the phase context instead of re-asking the same
+  questions.
+
+So `PROJECT.md`, `REQUIREMENTS.md`, and `ROADMAP.md` are best understood as
+GSD's compiled project model, not necessarily the company's canonical product
+documents. The PRD or ADR may still be the human authority; GSD records the
+parts it needs in a shape that later workflows and agents can reliably read.
 
 GSD Core wants the AI to be less improvisational and more traceable. It turns
 "please build this" into a documented chain:
